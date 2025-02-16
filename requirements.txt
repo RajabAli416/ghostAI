@@ -1,0 +1,8 @@
+PyQt5
+numpy
+opencv-python
+easyocr
+moviepy
+torch
+TTS
+matplotlib
