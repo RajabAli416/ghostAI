@@ -1,3 +1,7 @@
+import select_roi, det, timestamp_filter, vid_gen
+from select_roi import ROIDrawer
+
+
 class VideoProcessor:
     def __init__(self):
         self.video_file = None
@@ -16,6 +20,7 @@ class VideoProcessor:
     def run_roi_annotation(self):
         if self.video_file:
             # Logic to run ROI annotation on the selected video
+            ROIDrawer.select_rois(self.video_file)
             pass
         else:
             raise ValueError("No video file selected.")

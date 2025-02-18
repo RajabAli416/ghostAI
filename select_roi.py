@@ -1,6 +1,5 @@
 import cv2
 import json
-import argparse
 
 class ROIDrawer:
     def __init__(self, video_path):
@@ -44,18 +43,18 @@ class ROIDrawer:
                 "left": min(x1, x2),
                 "right": max(x1, x2)
             }
-            print(f"ROI for '{self.roi_stage}' saved: {self.rois[self.roi_stage]}")
+            #print(f"ROI for '{self.roi_stage}' saved: {self.rois[self.roi_stage]}")
 
             # Automatically move to the next ROI stage
             if self.roi_stage == 'elimination':
                 self.roi_stage = 'storm'
-                print("Select ROI for storm.")
+                #print("Select ROI for storm.")
             elif self.roi_stage == 'storm':
                 self.roi_stage = 'players'
-                print("Select ROI for players.")
+                #print("Select ROI for players.")
             elif self.roi_stage == 'players':
                 # Save ROIs automatically once all are selected
-                print("All ROIs selected. Saving to 'rois.json'.")
+                #print("All ROIs selected. Saving to 'rois.json'.")
                 self.save_rois()
                 cv2.destroyAllWindows()
                 self.cap.release()
@@ -73,7 +72,7 @@ class ROIDrawer:
         """Save the ROIs to a JSON file"""
         with open("rois.json", "w") as f:
             json.dump(self.rois, f, indent=4)
-        print("ROIs saved to 'rois.json'.")
+        #print("ROIs saved to 'rois.json'.")
 
     def select_rois(self):
         # Load video
@@ -98,8 +97,8 @@ class ROIDrawer:
         self.clone = self.frame.copy()  # Clone the frame for resetting during drawing
         cv2.setMouseCallback("Frame", self.draw_roi)
 
-        print("Select ROI for elimination.")
-        print("Use the scroll bar to navigate frames.")
+        #print("Select ROI for elimination.")
+        #print("Use the scroll bar to navigate frames.")
 
         while True:
             cv2.imshow("Frame", self.frame)
@@ -113,9 +112,9 @@ class ROIDrawer:
         self.cap.release()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Select ROI')
-    parser.add_argument('video_path', type=str, help='Directory containing video input file')
-    args = parser.parse_args()
 
-    roi_drawer = ROIDrawer(args.video_path)
+    path = r"C:\Users\Ali\PycharmProjects\AIStreamer\cutclip.mp4"
+
+    roi_drawer = ROIDrawer(path)
     roi_drawer.select_rois()
+

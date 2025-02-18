@@ -5,7 +5,7 @@ class Settings:
             "demon_voice": "resources/audio/demon_voice.wav",
             "trump_voice": "resources/audio/trump_voice.mp3"
         }
-        self.roi_file_path = ""
+        self.roi_file_path = "../../select_roi.py"
         self.processing_percentage = 0
 
     def set_video_path(self, path):
