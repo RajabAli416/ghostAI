@@ -13,6 +13,7 @@ class ROIDrawer:
         self.total_frames = 0  # Store total frame count
         self.cap = None  # VideoCapture object
         self.roi_stage = 'elimination'  # Stage of ROI drawing
+        self.all_rois_selected = False
 
     def draw_roi(self, event, x, y, flags, param):
         """ Mouse callback to handle ROI selection """
@@ -56,8 +57,11 @@ class ROIDrawer:
                 # Save ROIs automatically once all are selected
                 #print("All ROIs selected. Saving to 'rois.json'.")
                 self.save_rois()
-                cv2.destroyAllWindows()
-                self.cap.release()
+                cv2.imshow("Frame", self.frame)
+                self.all_rois_selected = True  # Set flag to indicate completion
+                #cv2.waitKey(500)  # Wait for 500 milliseconds
+                #cv2.destroyAllWindows()
+                #self.cap.release()
 
     def update_frame(self, position):
         """Update the displayed frame based on the trackbar position"""
@@ -107,6 +111,9 @@ class ROIDrawer:
             if key == ord('q'):
                 print("Exiting without saving.")
                 break
+
+            if self.all_rois_selected:
+                break # Exit the loop when all ROIs are selected
 
         cv2.destroyAllWindows()
         self.cap.release()
