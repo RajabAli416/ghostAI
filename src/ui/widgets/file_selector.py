@@ -56,3 +56,10 @@ class FileSelector(QWidget):
 
     def update_progress(self, value):
         self.progress_bar.setValue(value)
+
+    def set_buttons_enabled(self, enabled: bool):
+        """Enable or disable all buttons during processing"""
+        self.video_button.setEnabled(enabled)
+        self.audio_button_1.setEnabled(enabled)
+        self.audio_button_2.setEnabled(enabled)
+        self.roi_button.setEnabled(enabled)

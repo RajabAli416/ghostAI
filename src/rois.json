@@ -1,0 +1,20 @@
+{
+    "elimination": {
+        "top": 312,
+        "bottom": 348,
+        "left": 1635,
+        "right": 1707
+    },
+    "storm": {
+        "top": 494,
+        "bottom": 666,
+        "left": 1004,
+        "right": 1371
+    },
+    "players": {
+        "top": 381,
+        "bottom": 515,
+        "left": 1500,
+        "right": 1761
+    }
+}

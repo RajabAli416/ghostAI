@@ -1,6 +1,9 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget
+from PyQt5.QtWidgets import QMainWindow, QWidget, QMessageBox
+from PyQt5.QtCore import Qt
 from .widgets.file_selector import FileSelector
-from ui.controllers.video_processor import VideoProcessor
+from .widgets.progress_bar import ProgressBar
+from .controllers.video_processor import VideoProcessor
+from .core.det import FortniteCommentator
 
 
 class MainWindow(QMainWindow):
@@ -34,13 +37,28 @@ class MainWindow(QMainWindow):
         # Connect video processor signals
         self.video_processor.progress_updated.connect(self.file_selector.update_progress)
         self.video_processor.status_updated.connect(self.update_status)
+        self.video_processor.process_completed.connect(self.on_process_completed)
 
     def run_roi_annotation(self):
         try:
-            self.video_processor.run_roi_annotation()
+            self.file_selector.set_buttons_enabled(False)
+            if self.video_processor.run_roi_annotation():
+                self.update_status("Processing pipeline completed successfully")
+            else:
+                self.update_status("Processing failed or was cancelled")
         except Exception as e:
             self.update_status(f"Error: {str(e)}")
+        finally:
+            self.file_selector.set_buttons_enabled(True)
 
     def update_status(self, message):
         if hasattr(self.file_selector, 'status_label'):
             self.file_selector.status_label.setText(message)
+
+    def on_process_completed(self, success):
+        if success:
+            QMessageBox.information(self, "Process Complete",
+                                    "Video processing completed successfully!\nResults saved to output files.")
+        else:
+            QMessageBox.warning(self, "Process Failed",
+                                "Video processing did not complete successfully.")
