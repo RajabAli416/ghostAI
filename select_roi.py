@@ -118,7 +118,6 @@ class ROIDrawer:
         cv2.destroyAllWindows()
         self.cap.release()
 
-
 if __name__ == "__main__":
 
     path = r"C:\Users\Ali\PycharmProjects\AIStreamer\cutclip.mp4"

@@ -1,46 +1,63 @@
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget
-from .widgets.file_selector import FileSelector
-from .widgets.progress_bar import ProgressBar
-from ..core.video_processor import VideoProcessor
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget, QFileDialog, QLabel, QProgressBar
+from PyQt5.QtCore import Qt
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("GhostAI Video Processor")
-        self.setGeometry(100, 100, 800, 600)
-        
-        # Initialize components
-        self.video_processor = VideoProcessor()
-        self.setup_ui()
-        self.connect_signals()
 
-    def setup_ui(self):
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-        layout = QVBoxLayout(central_widget)
+        self.setWindowTitle("Video Processor App")
+        self.setGeometry(100, 100, 600, 400)
 
-        # Add widgets
-        self.file_selector = FileSelector()
-        self.progress_bar = ProgressBar()
-        
-        layout.addWidget(self.file_selector)
-        layout.addWidget(self.progress_bar)
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
 
-    def connect_signals(self):
-        # Connect video processor signals
-        self.video_processor.progress_updated.connect(self.progress_bar.set_value)
-        self.video_processor.status_updated.connect(self.file_selector.set_status)
-        
-        # Connect UI signals
-        self.file_selector.video_selected.connect(self.video_processor.set_video)
-        self.file_selector.process_requested.connect(self.start_processing)
+        self.layout = QVBoxLayout()
+        self.central_widget.setLayout(self.layout)
 
-    def start_processing(self):
-        if not self.video_processor.video_file:
-            self.file_selector.set_status("Please select a video file first")
-            return
+        self.video_button = QPushButton("Add Video")
+        self.video_button.clicked.connect(self.select_video)
+        self.layout.addWidget(self.video_button)
 
-        # Disable UI during processing
-        self.file_selector.set_enabled(False)
-        self.video_processor.process_video(self.video_processor.video_file)
-        self.file_selector.set_enabled(True)
+        self.audio_button_1 = QPushButton("Select Demon Voice")
+        self.audio_button_1.clicked.connect(lambda: self.select_audio(1))
+        self.layout.addWidget(self.audio_button_1)
+
+        self.audio_button_2 = QPushButton("Select Trump Voice")
+        self.audio_button_2.clicked.connect(lambda: self.select_audio(2))
+        self.layout.addWidget(self.audio_button_2)
+
+        self.process_button = QPushButton("Run ROI Annotation")
+        self.process_button.clicked.connect(self.run_roi_annotation)
+        self.layout.addWidget(self.process_button)
+
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setAlignment(Qt.AlignCenter)
+        self.layout.addWidget(self.progress_bar)
+
+        self.status_label = QLabel("")
+        self.layout.addWidget(self.status_label)
+
+    def select_video(self):
+        options = QFileDialog.Options()
+        file_name, _ = QFileDialog.getOpenFileName(self, "Select Video File", "", "Video Files (*.mp4 *.avi *.mov)", options=options)
+        if file_name:
+            self.status_label.setText(f"Selected Video: {file_name}")
+
+    def select_audio(self, audio_type):
+        options = QFileDialog.Options()
+        file_name, _ = QFileDialog.getOpenFileName(self, "Select Audio File", "", "Audio Files (*.wav *.mp3)", options=options)
+        if file_name:
+            if audio_type == 1:
+                self.status_label.setText(f"Selected Demon Voice: {file_name}")
+            else:
+                self.status_label.setText(f"Selected Trump Voice: {file_name}")
+
+    def run_roi_annotation(self):
+        self.status_label.setText("Running ROI Annotation...")
+        # Here you would add the logic to process the video and update the progress bar
+        # For demonstration, we will simulate progress
+        for i in range(101):
+            self.progress_bar.setValue(i)  # Update progress bar
+            QApplication.processEvents()  # Process events to update UI
+            time.sleep(0.05)  # Simulate processing time
+        self.status_label.setText("ROI Annotation Completed!")
