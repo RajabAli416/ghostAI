@@ -33,6 +33,10 @@ class FileSelector(QWidget):
         self.progress_bar.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.progress_bar)
 
+        self.status_label = QLabel("")
+        self.status_label.setAlignment(Qt.AlignCenter)
+        layout.addWidget(self.status_label)
+
         self.setLayout(layout)
 
     def select_video(self):
