@@ -1,3 +1,7 @@
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QVBoxLayout, QProgressBar, QWidget
+
+
 class ProgressBar(QWidget):
     def __init__(self, parent=None):
         super(ProgressBar, self).__init__(parent)

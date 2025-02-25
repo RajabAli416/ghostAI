@@ -1,4 +1,4 @@
-# File: /video-processor-app/video-processor-app/src/main.py
+
 
 import sys
 from PyQt5.QtWidgets import QApplication
