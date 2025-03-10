@@ -1,14 +1,19 @@
 
 
 import sys
+import os
 from PyQt5.QtWidgets import QApplication
 from ui.main_window import MainWindow
 
 def main():
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec_())
+    try:
+        app = QApplication(sys.argv)
+        window = MainWindow()
+        window.show()
+        return app.exec_()
+    except Exception as e:
+        print(f"Error starting application: {e}")
+        return 1
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
